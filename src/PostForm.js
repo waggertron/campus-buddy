@@ -212,7 +212,7 @@ export default class PostForm extends React.Component {
                     advocacy (assistance talking to school officials/offices)
                   </option>
                   <option value="orientation">
-                    orientation (finding campus locations)
+                    orientation (finding campus locations/activities)
                   </option>
                   <option value="organization">organization</option>
                   <option value="educational">
