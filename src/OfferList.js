@@ -9,6 +9,7 @@ import {
   FormGroup,
   Col,
   Row,
+  Container,
 } from 'reactstrap';
 
 class OfferList extends Component {
@@ -43,7 +44,6 @@ class OfferList extends Component {
     });
     const listContent = filteredContent
       .sort((a, b) => {
-        console.log(a, b);
         if (new Date(a.createdAt) > new Date(b.createdAt)) {
           return -1;
         } else {
@@ -116,7 +116,7 @@ class OfferList extends Component {
         );
       });
     return (
-      <Col>
+      <Container>
         <FormGroup>
           <Row>
             <Col>
@@ -136,7 +136,7 @@ class OfferList extends Component {
           </Row>
         </FormGroup>
         <Col>{listContent}</Col>
-      </Col>
+      </Container>
     );
   }
 }

@@ -8,6 +8,7 @@ import {
   Row,
   Button,
   Card,
+  Container,
 } from 'reactstrap';
 
 export default class PostForm extends React.Component {
@@ -75,7 +76,6 @@ export default class PostForm extends React.Component {
     this.setState({[name]: value});
   };
   render() {
-    console.log(this.props);
     const {
       state: {
         title,
@@ -90,7 +90,7 @@ export default class PostForm extends React.Component {
       },
     } = this;
     return (
-      <Col>
+      <Container>
         <Card className="postFormCard">
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
@@ -257,7 +257,7 @@ export default class PostForm extends React.Component {
             </Row>
           </Form>
         </Card>
-      </Col>
+      </Container>
     );
   }
 }
