@@ -116,13 +116,13 @@ class OfferList extends Component {
         );
       });
     return (
-      <div>
+      <Col>
         <FormGroup>
           <Row>
-            <Col sm={{size: 3, offset: 4}} xs={12}>
+            <Col>
               <Label for="filter">Filter Posts</Label>
             </Col>
-            <Col xs={12} sm={3}>
+            <Col>
               <Input
                 type="select"
                 name="filter"
@@ -135,10 +135,8 @@ class OfferList extends Component {
             </Col>
           </Row>
         </FormGroup>
-        <Col sm={{size: 6, offset: 5}} xs={12}>
-          {listContent}
-        </Col>
-      </div>
+        <Col>{listContent}</Col>
+      </Col>
     );
   }
 }
