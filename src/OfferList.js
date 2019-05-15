@@ -135,7 +135,7 @@ class OfferList extends Component {
             </Col>
           </Row>
         </FormGroup>
-        <Col sm={{size: 6, offset: 4}} xs={12}>
+        <Col sm={{size: 6, offset: 5}} xs={12}>
           {listContent}
         </Col>
       </div>
