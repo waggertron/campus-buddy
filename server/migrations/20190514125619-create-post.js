@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('posts', {
@@ -6,43 +5,46 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       title: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       type: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       timeLength: {
-        type: Sequelize.NUMBER
+        type: Sequelize.NUMBER,
       },
       compensation: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       reoccuring: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       reoccuringUnit: {
         type: Sequelize.STRING,
       },
       contact: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+      },
+      offerType: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('posts');
-  }
+  },
 };

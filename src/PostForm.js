@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Input,
   FormGroup,
@@ -11,28 +10,30 @@ import {
   Card,
 } from 'reactstrap';
 
-const propTypes = {};
-
-const defaultProps = {};
-
 export default class PostForm extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
-    const result = await this.createPost();
+    const result = await this.createPost(this.state);
     if (result) {
       await this.setState({...PostForm.defaultState});
     }
   };
   createPost = async data => {
     try {
+      for (let requiredField of PostForm.fields) {
+        if (!data[requiredField]) {
+          return alert('all fields are required');
+        }
+      }
       const response = await fetch('/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.state),
+        body: JSON.stringify(data),
       });
-      return await response.json();
+      await response.json();
+      this.props.history.push('/');
     } catch (e) {
       console.log(e);
       return null;
@@ -42,13 +43,22 @@ export default class PostForm extends React.Component {
     compensation: 'None',
     reoccuringUnit: 'week',
     type: 'advocacy',
+    offerType: 'Requesting Help',
   };
+  static fields = new Set([
+    'title',
+    'description',
+    'type',
+    'timeLength',
+    'compensation',
+    'contact',
+    'offerType',
+  ]);
   state = {...PostForm.defaultState};
   onChange = e => {
     const {
       target: {value, name},
     } = e;
-    console.log({value, name});
     this.setState({[name]: value});
   };
   onCheck = e => {
@@ -57,6 +67,12 @@ export default class PostForm extends React.Component {
     } = e;
 
     this.setState({[name]: checked});
+  };
+  handleOptionChange = e => {
+    const {
+      target: {value, name},
+    } = e;
+    this.setState({[name]: value});
   };
   render() {
     console.log(this.props);
@@ -70,9 +86,9 @@ export default class PostForm extends React.Component {
         compensation,
         reoccuring,
         contact,
+        offerType,
       },
     } = this;
-    console.log(this.state);
     return (
       <Card className="postFormCard">
         <Form onSubmit={this.handleSubmit}>
@@ -104,18 +120,33 @@ export default class PostForm extends React.Component {
               />
             </Col>
           </FormGroup>
-          <FormGroup>
-            <Col sm={2}>
-              <Label for="">Type:</Label>
-            </Col>
-            <Col sm={10}>
-              <Input
-                type="text"
-                placeholder=""
-                name="type"
-                onChange={this.onChange}
-                value={type}
-              />
+          <FormGroup tag="fieldset">
+            <Col>
+              <Label for="description">Offering or requesting help?</Label>
+              <FormGroup check>
+                <Label check>
+                  <Input
+                    type="radio"
+                    name="offerType"
+                    checked={offerType === 'Requesting Help'}
+                    onChange={this.handleOptionChange}
+                    value="Requesting Help"
+                  />{' '}
+                  Requesting Help
+                </Label>
+              </FormGroup>
+              <FormGroup check>
+                <Label check>
+                  <Input
+                    type="radio"
+                    name="offerType"
+                    checked={offerType === 'Offering Help'}
+                    value="Offering Help"
+                    onChange={this.handleOptionChange}
+                  />{' '}
+                  Offering Help
+                </Label>
+              </FormGroup>
             </Col>
           </FormGroup>
           <FormGroup>
@@ -175,7 +206,7 @@ export default class PostForm extends React.Component {
                 type="select"
                 name="type"
                 onChange={this.onChange}
-                value={compensation}>
+                value={type}>
                 <option value="advocacy">
                   advocacy (assistance talking to school officials/offices)
                 </option>
@@ -211,7 +242,6 @@ export default class PostForm extends React.Component {
             <Col sm={10}>
               <Input
                 type="text"
-                placeholder=""
                 name="contact"
                 onChange={this.onChange}
                 value={contact}
@@ -229,6 +259,3 @@ export default class PostForm extends React.Component {
     );
   }
 }
-
-PostForm.propTypes = propTypes;
-PostForm.defaultProps = defaultProps;

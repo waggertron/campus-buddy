@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       reoccuring: DataTypes.BOOLEAN,
       reoccuringUnit: DataTypes.STRING,
       contact: DataTypes.STRING,
+      offerType: DataTypes.STRING,
     },
     {}
   );

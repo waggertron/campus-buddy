@@ -6,11 +6,12 @@ html {
 }
 .main {
   margin: 30px;
+  padding: 20px;
 }
 
 .postCard {
   padding: 30px;
-  max-width: 400px;
+  /* max-width: 400px; */
   border-radius: 10px !important;
   text-align: left;
 }

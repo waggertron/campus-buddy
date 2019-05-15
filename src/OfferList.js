@@ -1,27 +1,20 @@
 import React, {Component} from 'react';
 
-import {Card, CardBody, CardText, CardTitle, CardSubtitle} from 'reactstrap';
+import {
+  Card,
+  Label,
+  CardText,
+  CardTitle,
+  Input,
+  FormGroup,
+  Col,
+  Row,
+} from 'reactstrap';
 
 class OfferList extends Component {
   state = {
-    content: [
-      {
-        compensation: 'None',
-        contact: 'weylinwagnon@gmail.com',
-        createdAt: '2019-05-15T01:11:15.622Z',
-        description: 'I need help finding my classes',
-        id: 2,
-
-        reoccuring: true,
-        reoccuringUnit: 'week',
-        timeLength: 10,
-        title: 'Test post',
-        type: 'advocacy',
-        updatedAt: '2019-05-15T01:11:15.622Z',
-      },
-    ],
-    loading: false,
-    filter: null,
+    content: [],
+    filter: 'All',
   };
   async componentDidMount() {
     try {
@@ -32,66 +25,121 @@ class OfferList extends Component {
       console.log(e);
     }
   }
-  handleChange = e => {};
+  onChange = e => {
+    const {
+      target: {value},
+    } = e;
+    this.setState({filter: value});
+  };
   render() {
-    const listContent = this.state.content.map(post => {
-      const {
-        title,
-        description,
-        type,
-        timeLength,
-        compensation,
-        reoccuring,
-        reoccuringUnit,
-        contact,
-        id,
-      } = post;
-      return (
-        <Card className="postCard" key={id}>
-          <CardTitle>
-            <h5>{title}</h5>
-          </CardTitle>
-          <CardText>
-            <span className="fieldTitle">
-              Description: <br />
-            </span>
-            <span className="fieldValue">{description}</span>
-          </CardText>
-          <CardText>
-            <span className="fieldTitle">
-              Help Category:
-              <br />
-            </span>
-            <span className="fieldValue">{type}</span>
-          </CardText>
-          <CardText>
-            <span className="fieldTitle">
-              Time:
-              <br />
-            </span>
-            <span className="fieldValue">
-              {timeLength}
-              {reoccuring ? ` hours per ${reoccuringUnit}` : 'hours'}
-            </span>
-          </CardText>
-          <CardText>
-            <span className="fieldTitle">
-              Compensation:
-              <br />
-            </span>
-            <span className="fieldValue">{compensation}</span>
-          </CardText>
-          <CardText>
-            <span className="fieldTitle">
-              Contact:
-              <br />
-            </span>
-            <span className="fieldValue">{contact}</span>
-          </CardText>
-        </Card>
-      );
+    const {
+      state: {filter, content},
+    } = this;
+    const filteredContent = content.filter(post => {
+      if (filter === 'All') {
+        return true;
+      }
+      return post.offerType === filter;
     });
-    return <div>{listContent}</div>;
+    const listContent = filteredContent
+      .sort((a, b) => {
+        console.log(a, b);
+        if (new Date(a.createdAt) > new Date(b.createdAt)) {
+          return -1;
+        } else {
+          return 1;
+        }
+      })
+      .map(post => {
+        const {
+          title,
+          description,
+          type,
+          timeLength,
+          compensation,
+          reoccuring,
+          reoccuringUnit,
+          contact,
+          id,
+          offerType,
+        } = post;
+        return (
+          <Card className="postCard" key={id}>
+            <CardTitle>
+              <h5>{title}</h5>
+            </CardTitle>
+            <CardText>
+              <span className="fieldTitle">
+                Description: <br />
+              </span>
+              <span className="fieldValue">{description}</span>
+            </CardText>
+            <CardText>
+              <span className="fieldTitle">
+                Offer Type:
+                <br />
+              </span>
+              <span className="fieldValue">{offerType}</span>
+            </CardText>
+            <CardText>
+              <span className="fieldTitle">
+                Help Category:
+                <br />
+              </span>
+              <span className="fieldValue">{type}</span>
+            </CardText>
+            <CardText>
+              <span className="fieldTitle">
+                Time:
+                <br />
+              </span>
+              <span className="fieldValue">
+                {timeLength}
+                {reoccuring ? ` hours per ${reoccuringUnit}` : 'hours'}
+              </span>
+            </CardText>
+            <CardText>
+              <span className="fieldTitle">
+                Compensation:
+                <br />
+              </span>
+              <span className="fieldValue">{compensation}</span>
+            </CardText>
+            <CardText>
+              <span className="fieldTitle">
+                Contact:
+                <br />
+              </span>
+              <span className="fieldValue">{contact}</span>
+            </CardText>
+          </Card>
+        );
+      });
+    return (
+      <div>
+        <FormGroup>
+          <Row>
+            <Col sm={{size: 3, offset: 4}} xs={12}>
+              <Label for="filter">Filter Posts</Label>
+            </Col>
+            <Col xs={12} sm={3}>
+              <Input
+                type="select"
+                name="filter"
+                onChange={this.onChange}
+                value={filter}>
+                <option value="All">All</option>
+                <option value="Requesting Help">Requesting Help</option>
+                <option value="Offering Help">Offering Help</option>
+              </Input>
+            </Col>
+          </Row>
+        </FormGroup>
+        <Col sm={{size: 6, offset: 4}} xs={12}>
+          {listContent}
+        </Col>
+      </div>
+    );
   }
 }
 
