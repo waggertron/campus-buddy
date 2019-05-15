@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
       type: DataTypes.STRING,
       timeLength: DataTypes.NUMBER,
-      timeUnit: DataTypes.STRING,
       compensation: DataTypes.BOOLEAN,
       reoccuring: DataTypes.BOOLEAN,
       reoccuringUnit: DataTypes.STRING,

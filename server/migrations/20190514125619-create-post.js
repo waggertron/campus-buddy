@@ -20,9 +20,6 @@ module.exports = {
       timeLength: {
         type: Sequelize.NUMBER
       },
-      timeUnit: {
-        type: Sequelize.STRING
-      },
       compensation: {
         type: Sequelize.BOOLEAN
       },

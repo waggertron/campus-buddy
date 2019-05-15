@@ -14,7 +14,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
+  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}  
+  font-family: 'Lobster', cursive;
+  padding: 30px;
+}
+.title {
+  font-size: 3em;
+}
+.navItem {
+  color: white;
+  margin: 1rem 3rem 0.5rem;
+  text-decoration: underline;
+}
+.navItem.active {
+  text-decoration: none;
+}
+.navItem:hover {
+    color: gray;
+}

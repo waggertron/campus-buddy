@@ -1,20 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Input, FormGroup, Col, Form, Label, Row, Button} from 'reactstrap';
+import {
+  Input,
+  FormGroup,
+  Col,
+  Form,
+  Label,
+  Row,
+  Button,
+  Card,
+} from 'reactstrap';
 
 const propTypes = {};
 
 const defaultProps = {};
 
 export default class PostForm extends React.Component {
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    console.log(e.target.value);
+    const result = await this.createPost();
+    if (result) {
+      await this.setState({...PostForm.defaultState});
+    }
   };
-  state = {
+  createPost = async data => {
+    try {
+      const response = await fetch('/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state),
+      });
+      return await response.json();
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  };
+  static defaultState = {
     compensation: 'None',
     reoccuringUnit: 'week',
+    type: 'advocacy',
   };
+  state = {...PostForm.defaultState};
   onChange = e => {
     const {
       target: {value, name},
@@ -30,20 +59,22 @@ export default class PostForm extends React.Component {
     this.setState({[name]: checked});
   };
   render() {
+    console.log(this.props);
     const {
       state: {
         title,
         description,
         type,
         timeLength,
-        timeUnit,
+        reoccuringUnit,
         compensation,
         reoccuring,
+        contact,
       },
     } = this;
     console.log(this.state);
     return (
-      <React.Fragment>
+      <Card className="postFormCard">
         <Form onSubmit={this.handleSubmit}>
           <FormGroup>
             <Col sm={2}>
@@ -89,34 +120,33 @@ export default class PostForm extends React.Component {
           </FormGroup>
           <FormGroup>
             <Col sm={4}>
-              <Label for="">Time (in hours):</Label>
+              <Label for="timeLength">Time (in hours):</Label>
             </Col>
             <Col sm={10}>
               <Input
                 type="number"
                 placeholder=""
-                name="time"
+                name="timeLength"
+                value={timeLength}
                 onChange={this.onChange}
               />
             </Col>
           </FormGroup>
 
           <FormGroup row style={{marginLeft: '18px'}}>
-            <Label for="reoccuring">Reoccuring?</Label>
-            <Col sm={10}>
-              <FormGroup check>
-                <Label check>
-                  <Input
-                    check
-                    type="checkbox"
-                    placeholder=""
-                    name="reoccuring"
-                    onChange={this.onCheck}
-                    checked={reoccuring}
-                  />
-                </Label>
-              </FormGroup>
-            </Col>
+            <Label for="reoccuring">
+              Reoccuring? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Label>
+            {/* <FormGroup check> */}
+            <Label check>
+              <Input
+                type="checkbox"
+                name="reoccuring"
+                onChange={this.onCheck}
+                checked={reoccuring}
+              />
+            </Label>
+            {/* </FormGroup> */}
           </FormGroup>
           {reoccuring ? (
             <FormGroup>
@@ -128,7 +158,7 @@ export default class PostForm extends React.Component {
                   type="select"
                   name="reoccuringUnit"
                   onChange={this.onChange}
-                  value={compensation}>
+                  value={reoccuringUnit}>
                   <option value="day">day</option>
                   <option value="week">week</option>
                   <option value="month">month</option>
@@ -138,7 +168,7 @@ export default class PostForm extends React.Component {
           ) : null}
           <FormGroup>
             <Col sm={4}>
-              <Label for="type">Type:</Label>
+              <Label for="type">Help Category</Label>
             </Col>
             <Col sm={8}>
               <Input
@@ -174,9 +204,28 @@ export default class PostForm extends React.Component {
               </Input>
             </Col>
           </FormGroup>
-          <Button type="submit">Submit</Button>
+          <FormGroup>
+            <Col sm={2}>
+              <Label for="contact">Contact:</Label>
+            </Col>
+            <Col sm={10}>
+              <Input
+                type="text"
+                placeholder=""
+                name="contact"
+                onChange={this.onChange}
+                value={contact}
+              />
+            </Col>
+          </FormGroup>
+          <Row>
+            <Col xs={8} />
+            <Col>
+              <Button type="submit">Submit</Button>
+            </Col>
+          </Row>
         </Form>
-      </React.Fragment>
+      </Card>
     );
   }
 }
