@@ -24,6 +24,9 @@ app.post('/posts', async(req,res,next) => {
   }
 
 })
+app.get('*', (req,res) => {
+  return res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'))
+})
 
 app.listen(process.env.PORT, () => {
   console.log('litening on port ', process.env.PORT);
